@@ -16,3 +16,7 @@ class EmptyMapException(Exception):
 
 class EmptyInvaderException(Exception):
     pass
+
+
+class MapTooSmallException(Exception):
+    pass

@@ -1,5 +1,6 @@
 from core.exceptions import InvalidAsciiCharacterException
 from core.types import Frame
+from maps.base import Map
 
 
 class AsciiToBinaryMixin:
@@ -20,7 +21,7 @@ class AsciiToBinaryMixin:
         :return: The converted binary matrix.
         """
         if not ascii_string:
-            return []
+            return Frame([])
 
         matrix = []
         for row in ascii_string.split('\n'):
@@ -33,4 +34,46 @@ class AsciiToBinaryMixin:
             matrix.append(matrix_row)
         print(ascii_string)  # TODO remove this print
         print(matrix)
-        return matrix
+        return Frame(matrix)
+
+
+class DynamicProgrammingMixin:
+
+    @staticmethod
+    def compute_dp_matrix(map_: Map) -> list[list[int]]:
+        """
+        Compute the Dynamic Programming (DP) matrix in which each cell contains the cumulative
+        number of signal bits (1s) of the frame that has (0,0) as the top left corner and
+        the cell's coords as the bottom right corner.
+
+        For instance, this map:
+
+        1 0 1 1 0
+        1 0 1 0 1
+        1 1 0 0 1
+
+        Will result in the following DP matrix:
+
+        1 1 2 3 3
+        2 2 4 5 6
+        3 4 6 7 9
+
+        :param map_: The map to process.
+        :return: The DP populated matrix.
+        """
+        dp_matrix = []
+        # create a longer list to simplify DP logic around first row
+        dp_prev_row = [0] * (map_.width + 1)
+        for row in map_.get_binary_representation():
+            # create a longer list to simplify DP logic around first element
+            dp_row = [0] * (len(row) + 1)
+            cumulative_row = dp_row[:]  # make a copy
+
+            for i, bit in enumerate(row):
+                cumulative_row[i+1] = cumulative_row[i] + bit
+                dp_row[i+1] = dp_prev_row[i + 1] + bit + cumulative_row[i]
+
+            dp_matrix.append(dp_row[1:])
+            dp_prev_row = dp_row
+
+        return dp_matrix
