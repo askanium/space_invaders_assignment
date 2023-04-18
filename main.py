@@ -1,5 +1,7 @@
 from invaders.ascii import AsciiInvader
 from maps.ascii import AsciiMap
+from radars.area import DPAreaRadar
+from scanners.basic import BasicScanner
 
 if __name__ == '__main__':
     invader = AsciiInvader("""
@@ -12,6 +14,17 @@ ooooooooooo
 o-ooooooo-o
 o-o-----o-o
 ---oo-oo---
+~~~~""")
+    invader2 = AsciiInvader("""
+~~~~
+---oo---
+--oooo--
+-oooooo-
+oo-oo-oo
+oooooooo
+--o--o--
+-o-oo-o-
+o-o--o-o
 ~~~~""")
 
     frame = [
@@ -36,8 +49,6 @@ o-o-----o-o
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ]
 
-    print(invader.match_against_frame(frame))
-    print(invader.match_against_frame(frame2))
     print(invader)
 
     map_string = """
@@ -95,4 +106,20 @@ o--oo------o-----oo--o-oo------------oo--o------o--o-------------oo----o--------
 ~~~~    
 """
     map_ = AsciiMap(map_string)
-    print(map_)
+
+    print(invader.pretty_representation())
+    scanner = BasicScanner(invader)
+    radar = DPAreaRadar(map_, scanner)
+    radar.scan()
+    invader_frames_coords = radar.get_invader_frame_locations()
+    for frame_coord in invader_frames_coords:
+        [x1, y1], [x2, y2] = frame_coord
+        map_.print_frame_at(x1, y1, x2, y2)
+
+    scanner2 = BasicScanner(invader2)
+    radar2 = DPAreaRadar(map_, scanner2)
+    radar2.scan()
+    invader2_frames_coords = radar2.get_invader_frame_locations()
+    for frame_coord in invader2_frames_coords:
+        [x1, y1], [x2, y2] = frame_coord
+        map_.print_frame_at(x1, y1, x2, y2)

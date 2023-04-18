@@ -122,10 +122,10 @@ def test_dp_area_radar_get_next_frame_coords(mocked_method):
     scanner.required_frame_coords = [2, 3]
     radar = DPAreaRadar(map_, scanner)
     expected_result = [
-        [[0, 0], [2, 1]],
-        [[0, 1], [2, 2]],
-        [[1, 0], [3, 1]],
-        [[1, 1], [3, 2]],
+        [[0, 0], [1, 2]],
+        [[1, 0], [2, 2]],
+        [[0, 1], [1, 3]],
+        [[1, 1], [2, 3]],
     ]
     actual_result = []
 

@@ -1,7 +1,9 @@
+from abc import ABC, abstractmethod
+
 from core.types import Frame
 
 
-class Map:
+class Map(ABC):
     """
     An abstract class for a Map.
 
@@ -20,6 +22,10 @@ class Map:
     """
     representation: Frame
 
+    @abstractmethod
+    def print_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int):
+        raise NotImplementedError("Method not implemented.")
+
     def get_binary_representation(self):
         return self.representation
 
@@ -30,6 +36,13 @@ class Map:
     @property
     def height(self):
         return len(self.representation)
+
+    def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
+        frame = Frame([])
+        for i in range(y_start, y_end + 1):
+            row = self.representation[i][x_start:x_end+1]
+            frame.append(row)
+        return frame
 
     def __str__(self):
         return '\n'.join([''.join(map(str, row)) for row in self.representation])

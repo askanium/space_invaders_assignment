@@ -32,8 +32,6 @@ class AsciiToBinaryMixin:
 
                 matrix_row.append(int(char == 'o'))
             matrix.append(matrix_row)
-        print(ascii_string)  # TODO remove this print
-        print(matrix)
         return Frame(matrix)
 
 
