@@ -112,14 +112,16 @@ o--oo------o-----oo--o-oo------------oo--o------o--o-------------oo----o--------
     radar = DPAreaRadar(map_, scanner)
     radar.scan()
     invader_frames_coords = radar.get_invader_frame_locations()
-    for frame_coord in invader_frames_coords:
+    for (similarity_ratio, frame_coord) in invader_frames_coords:
         [x1, y1], [x2, y2] = frame_coord
+        print(f"\nSimilarity ratio: {round(similarity_ratio * 100, 1)}%")
         map_.print_frame_at(x1, y1, x2, y2)
 
     scanner2 = BasicScanner(invader2)
     radar2 = DPAreaRadar(map_, scanner2)
     radar2.scan()
     invader2_frames_coords = radar2.get_invader_frame_locations()
-    for frame_coord in invader2_frames_coords:
+    for (similarity_ratio, frame_coord) in invader2_frames_coords:
         [x1, y1], [x2, y2] = frame_coord
+        print(f"\nSimilarity ratio: {round(similarity_ratio * 100, 1)}%")
         map_.print_frame_at(x1, y1, x2, y2)

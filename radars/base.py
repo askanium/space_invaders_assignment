@@ -23,7 +23,7 @@ class Radar(ABC):
         raise NotImplementedError("Method not implemented.")
 
     @abstractmethod
-    def get_invader_frame_locations(self) -> list[[int, int]]:
+    def get_invader_frame_locations(self) -> list[tuple[float, list[[int, int]]]]:
         """
         Returns potential invader frame locations.
         :return:

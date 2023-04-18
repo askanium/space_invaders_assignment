@@ -101,7 +101,7 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
                 frame = self.map.get_frame_at(x_start, y_start, x_end, y_end)
                 similarity_ratio = self.scanner.process_frame(frame)
                 if similarity_ratio >= self.scanner.similarity_threshold:
-                    self.invader_locations.append(frame_coords)
+                    self.invader_locations.append((similarity_ratio, frame_coords))
 
-    def get_invader_frame_locations(self) -> list[[int, int]]:
+    def get_invader_frame_locations(self) -> list[tuple[float, list[[int, int]]]]:
         return self.invader_locations
