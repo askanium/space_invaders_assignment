@@ -19,24 +19,8 @@ class AsciiInvader(AsciiToBinaryMixin, Invader):
         super().__init__(binary_matrix)
 
     def match_against_frame(self, frame: Frame) -> float:
-        """
-        Matches Invader's known shape against a provided frame (segment of a map)
-        and computes the probability that the invader is represented in the noisy
-        frame.
-
-        :param frame: The area of the map that has the size of the invader.
-        :return: The probability that the invader is represented in the frame.
-        """
         self.validate_frame(frame)
-
-        matched_bits = 0
-
-        for i, row in enumerate(frame):
-            for j, bit in enumerate(row):
-                if frame[i][j] == self.pattern[i][j]:
-                    matched_bits += 1
-
-        return matched_bits / self.number_of_total_bits
+        return super().match_against_frame(frame)
 
     def validate_frame(self, frame: Frame):
         if not frame:

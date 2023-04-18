@@ -3,6 +3,8 @@ from unittest import mock
 import pytest
 
 from core.exceptions import MapTooSmallException
+from core.types import Frame
+from invaders.identified import AsciiIdentifiedInvader
 from maps.ascii import AsciiMap
 from radars.area import DPAreaRadar
 
@@ -168,7 +170,7 @@ def test_dp_area_radar_scan_low_frame_signal_amount(mocked_compute_dp, mocket_co
 def test_dp_area_radar_scan_high_frame_signal_amount(mocked_compute_dp, mocket_compute_frame_signal, mocked_get_next_frame):
     # setup
     dummy_frames = [[[0, 1], [1, 2]], []]
-    map_frame = [[1, 1], [1, 0], [1, 1]]
+    map_frame = Frame([[1, 1], [1, 0], [1, 1]])
     processed_similarity_ratio = 0.7
 
     map_ = mock.Mock()
@@ -184,6 +186,7 @@ def test_dp_area_radar_scan_high_frame_signal_amount(mocked_compute_dp, mocket_c
 
     radar = DPAreaRadar(map_, scanner)
     mocked_get_next_frame.side_effect = dummy_frames
+    expected_identified_invader = AsciiIdentifiedInvader(mock.Mock(), map_frame, processed_similarity_ratio, dummy_frames[0])
 
     # run
     radar.scan()
@@ -193,4 +196,6 @@ def test_dp_area_radar_scan_high_frame_signal_amount(mocked_compute_dp, mocket_c
     mocket_compute_frame_signal.assert_called_once_with(dummy_frames[0])
     map_.get_frame_at.assert_called_once_with(0, 1, 1, 2)
     scanner.process_frame.assert_called_once_with(map_frame)
-    assert radar.invader_locations == [(processed_similarity_ratio, dummy_frames[0])]
+
+    assert len(radar.get_identified_invaders()) == 1
+    assert radar.get_identified_invaders()[0].pretty_representation() == expected_identified_invader.pretty_representation()

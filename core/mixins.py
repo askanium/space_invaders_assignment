@@ -35,6 +35,23 @@ class AsciiToBinaryMixin:
         return Frame(matrix)
 
 
+class BinaryToAsciiMixin:
+    @staticmethod
+    def convert_binary_matrix_to_ascii(binary_matrix: Frame) -> str:
+        """
+        Converts a binary matrix into an ASCII string based on the following characteristics:
+        - "0" is converted into a dash "-"
+        - "1" is converted into a circle "o"
+
+        :param binary_matrix: The matrix to convert to ASCII string.
+        :return: The converted ASCII string.
+        """
+        ascii_string = ''
+        for row in binary_matrix:
+            ascii_string = f"{ascii_string}{''.join('o' if bit else '-' for bit in row)}\n"
+        return ascii_string
+
+
 class DynamicProgrammingMixin:
 
     @staticmethod

@@ -1,4 +1,5 @@
 from core.mixins import DynamicProgrammingMixin
+from invaders.base import IdentifiedInvader
 from maps.base import Map
 from radars.base import Radar
 from scanners.base import Scanner
@@ -15,7 +16,7 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
         self.dp_matrix = self.compute_dp_matrix(map_)
         self.current_coords = [0, 0]
         self.map_scanned = False
-        self.invader_locations = []
+        self.identified_invaders: list[IdentifiedInvader] = []
 
     def get_next_frame_coords(self) -> [[int, int], [int, int]]:
         """
@@ -101,7 +102,8 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
                 frame = self.map.get_frame_at(x_start, y_start, x_end, y_end)
                 similarity_ratio = self.scanner.process_frame(frame)
                 if similarity_ratio >= self.scanner.similarity_threshold:
-                    self.invader_locations.append((similarity_ratio, frame_coords))
+                    identified_invader = self.identified_invader_class(self.scanner.invader_target, frame, similarity_ratio, frame_coords)
+                    self.identified_invaders.append(identified_invader)
 
-    def get_invader_frame_locations(self) -> list[tuple[float, list[[int, int]]]]:
-        return self.invader_locations
+    def get_identified_invaders(self) -> list[IdentifiedInvader]:
+        return self.identified_invaders

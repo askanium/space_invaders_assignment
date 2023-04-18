@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
 from core.exceptions import MapTooSmallException
+from invaders.base import IdentifiedInvader
+from invaders.identified import AsciiIdentifiedInvader
 from maps.base import Map
 from scanners.base import Scanner
 
@@ -9,6 +11,8 @@ class Radar(ABC):
     """
     A radar class that can scan a map and identify potential locations of an invader.
     """
+    identified_invader_class: IdentifiedInvader = AsciiIdentifiedInvader
+
     def __init__(self, map_: Map, scanner: Scanner):
         self.map = map_
         self.scanner = scanner
@@ -23,7 +27,7 @@ class Radar(ABC):
         raise NotImplementedError("Method not implemented.")
 
     @abstractmethod
-    def get_invader_frame_locations(self) -> list[tuple[float, list[[int, int]]]]:
+    def get_identified_invaders(self) -> list[IdentifiedInvader]:
         """
         Returns potential invader frame locations.
         :return:

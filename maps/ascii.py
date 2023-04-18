@@ -1,9 +1,9 @@
 from core.exceptions import EmptyMapException
-from core.mixins import AsciiToBinaryMixin
+from core.mixins import AsciiToBinaryMixin, BinaryToAsciiMixin
 from maps.base import Map
 
 
-class AsciiMap(AsciiToBinaryMixin, Map):
+class AsciiMap(AsciiToBinaryMixin, BinaryToAsciiMixin, Map):
     """
     A map represented as ASCII characters.
     """
@@ -17,7 +17,5 @@ class AsciiMap(AsciiToBinaryMixin, Map):
 
     def print_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int):
         frame = self.get_frame_at(x_start, y_start, x_end, y_end)
-        ascii_string = ''
-        for row in frame:
-            ascii_string = f"{ascii_string}{''.join('o' if bit else '-' for bit in row)}\n"
+        ascii_string = self.convert_binary_matrix_to_ascii(frame)
         print(ascii_string)
