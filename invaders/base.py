@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from core.types import Frame
+
 
 class Invader(ABC):
     """
@@ -18,12 +20,13 @@ class Invader(ABC):
     10100000101
     00011011000
     """
-    pattern: list[list[int]]
+    pattern: Frame
     number_of_signal_bits: int
     number_of_total_bits: int
+    signal_ratio: float
 
     @abstractmethod
-    def match_against_frame(self, frame: list[list[int]]) -> float:
+    def match_against_frame(self, frame: Frame) -> float:
         """
         Matches Invader's known shape against a provided frame (segment of a map)
         and computes the probability that the invader is represented in the noisy
@@ -34,11 +37,13 @@ class Invader(ABC):
         """
         raise NotImplementedError("Method not implemented")
 
-    def get_width(self):
+    @property
+    def width(self):
         # TODO address edge case when there might not be first element in self.pattern
         return len(self.pattern[0])
 
-    def get_height(self):
+    @property
+    def height(self):
         return len(self.pattern)
 
     def compute_number_of_signal_bits(self) -> int:

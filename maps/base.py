@@ -1,5 +1,7 @@
 from abc import ABC
 
+from core.types import Frame
+
 
 class Map(ABC):
     """
@@ -18,7 +20,7 @@ class Map(ABC):
     101000001000001
     000110110000000
     """
-    representation: list[list[int]]
+    representation: Frame
 
     def __str__(self):
         return '\n'.join([''.join(map(str, row)) for row in self.representation])

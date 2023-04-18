@@ -1,10 +1,11 @@
 from core.exceptions import InvalidAsciiCharacterException
+from core.types import Frame
 
 
 class AsciiToBinaryMixin:
 
     @staticmethod
-    def convert_ascii_to_binary_matrix(ascii_string: str) -> list[list[int]]:
+    def convert_ascii_to_binary_matrix(ascii_string: str) -> Frame:
         """
         Converts an ASCII string into a binary matrix based on the following characteristics:
         - a dash "-" is converted to zero "0"

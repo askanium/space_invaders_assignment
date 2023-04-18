@@ -1,5 +1,6 @@
 from core.exceptions import EmptyFrameException, NonMatchingFramesException, EmptyInvaderException
 from core.mixins import AsciiToBinaryMixin
+from core.types import Frame
 from invaders.base import Invader
 
 
@@ -17,8 +18,9 @@ class AsciiInvader(AsciiToBinaryMixin, Invader):
 
         self.number_of_signal_bits = self.compute_number_of_signal_bits()
         self.number_of_total_bits = len(self.pattern) * len(self.pattern[0])
+        self.signal_ratio = self.number_of_signal_bits / self.number_of_total_bits
 
-    def match_against_frame(self, frame: list[list[int]]):
+    def match_against_frame(self, frame: Frame):
         self.validate_frame(frame)
 
         matched_bits = 0
@@ -30,7 +32,7 @@ class AsciiInvader(AsciiToBinaryMixin, Invader):
 
         return matched_bits / self.number_of_total_bits
 
-    def validate_frame(self, frame: list[list[int]]):
+    def validate_frame(self, frame: Frame):
         if not frame:
             raise EmptyFrameException()
         if len(frame) != len(self.pattern) or len(frame[0]) != len(self.pattern[0]):
