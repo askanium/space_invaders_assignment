@@ -1,9 +1,7 @@
-from abc import ABC
-
 from core.types import Frame
 
 
-class Map(ABC):
+class Map:
     """
     An abstract class for a Map.
 
@@ -21,6 +19,17 @@ class Map(ABC):
     000110110000000
     """
     representation: Frame
+
+    def get_binary_representation(self):
+        return self.representation
+
+    @property
+    def width(self):
+        return len(self.representation[0])
+
+    @property
+    def height(self):
+        return len(self.representation)
 
     def __str__(self):
         return '\n'.join([''.join(map(str, row)) for row in self.representation])
