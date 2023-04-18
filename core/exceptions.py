@@ -8,3 +8,11 @@ class NonMatchingFramesException(Exception):
 
 class InvalidAsciiCharacterException(Exception):
     pass
+
+
+class EmptyMapException(Exception):
+    pass
+
+
+class EmptyInvaderException(Exception):
+    pass
