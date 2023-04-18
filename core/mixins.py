@@ -18,12 +18,15 @@ class AsciiToBinaryMixin:
         :param ascii_string: The ASCII string to convert.
         :return: The converted binary matrix.
         """
+        if not ascii_string:
+            return []
+
         matrix = []
         for row in ascii_string.split('\n'):
             matrix_row = []
             for char in row:
                 if char not in '-o':
-                    raise InvalidAsciiCharacterException()
+                    raise InvalidAsciiCharacterException(f"Found {char} character. Only `o` and `-` are allowed.")
 
                 matrix_row.append(int(char == 'o'))
             matrix.append(matrix_row)

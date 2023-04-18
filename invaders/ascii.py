@@ -1,4 +1,4 @@
-from core.exceptions import EmptyFrameException, NonMatchingFramesException
+from core.exceptions import EmptyFrameException, NonMatchingFramesException, EmptyInvaderException
 from core.mixins import AsciiToBinaryMixin
 from invaders.base import Invader
 
@@ -9,7 +9,12 @@ class AsciiInvader(AsciiToBinaryMixin, Invader):
     """
 
     def __init__(self, ascii_string: str):
-        self.pattern = self.convert_ascii_to_binary_matrix(ascii_string)
+        cleaned_ascii_string = ascii_string.strip("~\n")
+        self.pattern = self.convert_ascii_to_binary_matrix(cleaned_ascii_string)
+
+        if not self.pattern:
+            raise EmptyInvaderException("An Invader's pattern should not be empty.")
+
         self.number_of_signal_bits = self.compute_number_of_signal_bits()
         self.number_of_total_bits = len(self.pattern) * len(self.pattern[0])
 
