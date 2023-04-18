@@ -11,16 +11,22 @@ class AsciiInvader(AsciiToBinaryMixin, Invader):
 
     def __init__(self, ascii_string: str):
         cleaned_ascii_string = ascii_string.strip("~\n")
-        self.pattern = self.convert_ascii_to_binary_matrix(cleaned_ascii_string)
+        binary_matrix = self.convert_ascii_to_binary_matrix(cleaned_ascii_string)
 
-        if not self.pattern:
+        if not binary_matrix:
             raise EmptyInvaderException("An Invader's pattern should not be empty.")
 
-        self.number_of_signal_bits = self.compute_number_of_signal_bits()
-        self.number_of_total_bits = len(self.pattern) * len(self.pattern[0])
-        self.signal_ratio = self.number_of_signal_bits / self.number_of_total_bits
+        super().__init__(binary_matrix)
 
-    def match_against_frame(self, frame: Frame):
+    def match_against_frame(self, frame: Frame) -> float:
+        """
+        Matches Invader's known shape against a provided frame (segment of a map)
+        and computes the probability that the invader is represented in the noisy
+        frame.
+
+        :param frame: The area of the map that has the size of the invader.
+        :return: The probability that the invader is represented in the frame.
+        """
         self.validate_frame(frame)
 
         matched_bits = 0
@@ -37,3 +43,9 @@ class AsciiInvader(AsciiToBinaryMixin, Invader):
             raise EmptyFrameException()
         if len(frame) != len(self.pattern) or len(frame[0]) != len(self.pattern[0]):
             raise NonMatchingFramesException()
+
+    def pretty_representation(self):
+        ascii_string = ''
+        for row in self.pattern:
+            ascii_string = f"{ascii_string}{''.join('o' if bit else '-' for bit in row)}\n"
+        return ascii_string

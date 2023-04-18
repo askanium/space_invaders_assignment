@@ -20,26 +20,39 @@ class Invader(ABC):
     10100000101
     00011011000
     """
-    pattern: Frame
-    number_of_signal_bits: int
-    number_of_total_bits: int
-    signal_ratio: float
+
+    def __init__(self, binary_matrix: Frame):
+        self._pattern = binary_matrix
+        self._number_of_signal_bits = self.compute_number_of_signal_bits()
+        self._number_of_total_bits = self.compute_number_of_total_bits()
+        self._signal_ratio = self.number_of_signal_bits / self.number_of_total_bits
+
+    @abstractmethod
+    def pretty_representation(self):
+        raise NotImplementedError("Method not implemented")
 
     @abstractmethod
     def match_against_frame(self, frame: Frame) -> float:
-        """
-        Matches Invader's known shape against a provided frame (segment of a map)
-        and computes the probability that the invader is represented in the noisy
-        frame.
-
-        :param frame: The area of the map that has the size of the invader.
-        :return: The probability that the invader is represented in the frame.
-        """
         raise NotImplementedError("Method not implemented")
 
     @property
+    def pattern(self) -> Frame:
+        return self._pattern
+
+    @property
+    def number_of_signal_bits(self) -> int:
+        return self._number_of_signal_bits
+
+    @property
+    def number_of_total_bits(self) -> int:
+        return self._number_of_total_bits
+
+    @property
+    def signal_ratio(self) -> float:
+        return self._signal_ratio
+
+    @property
     def width(self):
-        # TODO address edge case when there might not be first element in self.pattern
         return len(self.pattern[0])
 
     @property
@@ -52,6 +65,9 @@ class Invader(ABC):
         :return: The number of signal bits in an invader pattern.
         """
         return sum(sum(self.pattern, []))
+
+    def compute_number_of_total_bits(self) -> int:
+        return len(self.pattern) * len(self.pattern[0])
 
     def __str__(self):
         return '\n'.join([''.join(map(str, row)) for row in self.pattern])
