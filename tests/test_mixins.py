@@ -2,7 +2,6 @@ import pytest
 
 from core.exceptions import InvalidAsciiCharacterException
 from core.mixins import AsciiToBinaryMixin
-from core.utils import convert_ascii_to_binary_matrix
 
 
 def test_ascii_to_binary_mixin_convert_ascii_to_binary_matrix():
@@ -36,3 +35,15 @@ def test_convert_ascii_to_binary_matrix_raises_invalid_character_exception():
     # run & assert
     with pytest.raises(InvalidAsciiCharacterException):
         AsciiToBinaryMixin.convert_ascii_to_binary_matrix(ascii_string)
+
+
+def test_convert_ascii_to_binary_matrix_return_empty_matrix_on_empty_input():
+    # setup
+    ascii_string = ""
+    expected_result = []
+
+    # run
+    actual_result = AsciiToBinaryMixin.convert_ascii_to_binary_matrix(ascii_string)
+
+    # assert
+    assert actual_result == expected_result
