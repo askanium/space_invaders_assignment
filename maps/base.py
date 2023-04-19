@@ -41,11 +41,7 @@ class Map(ABC):
 
     @abstractmethod
     def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
-        frame = Frame([])
-        for i in range(y_start, y_end + 1):
-            row = self.representation[i][x_start:x_end + 1]
-            frame.append(row)
-        return frame
+        raise NotImplementedError("Method not implemented.")
 
     def __str__(self):
         return "\n".join(["".join(map(str, row)) for row in self.representation])
