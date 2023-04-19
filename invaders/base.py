@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from core.exceptions import NoSignalException
 from core.types import Frame
 
 
@@ -32,6 +33,9 @@ class Invader(PrettyRepresentationABC, ABC):
         self._number_of_signal_bits = self.compute_number_of_signal_bits()
         self._number_of_total_bits = self.compute_number_of_total_bits()
         self._signal_ratio = self.number_of_signal_bits / self.number_of_total_bits
+
+        if self._number_of_signal_bits == 0:
+            raise NoSignalException("Invader pattern does not contain any signal! You won't be able to search for invisible Invaders. At least not now ;)")
 
     @property
     def pattern(self) -> Frame:

@@ -1,7 +1,14 @@
 import pytest
 
-from core.exceptions import EmptyFrameException, EmptyInvaderException, NonMatchingFramesException
+from core.exceptions import EmptyFrameException, EmptyInvaderException, NonMatchingFramesException, NoSignalException
+from core.types import Frame
 from invaders.ascii import AsciiInvader
+
+
+def test_invader_raises_exception_on_empty_signal():
+    # run & assert
+    with pytest.raises(NoSignalException):
+        AsciiInvader("---")
 
 
 def test_ascii_invader_validate_frame_raises_empty_frame_exception():
@@ -11,7 +18,7 @@ def test_ascii_invader_validate_frame_raises_empty_frame_exception():
 
     # run & assert
     with pytest.raises(EmptyFrameException):
-        invader.validate_frame(frame)
+        invader.validate_frame(Frame(frame))
 
 
 def test_ascii_invader_raises_empty_invader_exception():
@@ -32,7 +39,7 @@ def test_ascii_invader_validate_frame_raises_non_matching_frames_exception():
 
     # run & assert
     with pytest.raises(NonMatchingFramesException):
-        invader.validate_frame(frame)
+        invader.validate_frame(Frame(frame))
 
 
 def test_ascii_invader_match_against_frame():
@@ -52,7 +59,7 @@ def test_ascii_invader_match_against_frame():
     expected_probability = 0.75
 
     # run
-    match_probability = invader.match_against_frame(frame)
+    match_probability = invader.match_against_frame(Frame(frame))
 
     # assert
     assert match_probability == expected_probability

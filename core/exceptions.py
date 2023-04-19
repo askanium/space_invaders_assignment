@@ -20,3 +20,7 @@ class EmptyInvaderException(Exception):
 
 class MapTooSmallException(Exception):
     pass
+
+
+class NoSignalException(Exception):
+    pass
