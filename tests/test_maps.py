@@ -3,6 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from core.exceptions import EmptyMapException
+from core.utils import FrameCoords
 from maps.ascii import AsciiMap, AsciiSphericalMap
 
 
@@ -50,7 +51,7 @@ def test_ascii_map_get_frame_at(mocked_convert_method, map_binary_repr):
     ]
 
     # run
-    frame = ascii_map.get_frame_at(1, 1, 3, 2)
+    frame = ascii_map.get_frame_at(FrameCoords(1, 1, 3, 2))
 
     # assert
     assert frame == expected_result
@@ -78,9 +79,10 @@ def test_ascii_spherical_map_get_frame_at(
     # setup
     mocked_convert_method.return_value = map_binary_repr
     ascii_map = AsciiSphericalMap("")
+    frame_coords = FrameCoords(x_start, y_start, x_end, y_end)
 
     # run
-    frame = ascii_map.get_frame_at(x_start, y_start, x_end, y_end)
+    frame = ascii_map.get_frame_at(frame_coords)
 
     # assert
     assert frame == expected_result

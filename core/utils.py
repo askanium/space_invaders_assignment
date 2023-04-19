@@ -12,3 +12,6 @@ class FrameCoords:
     @property
     def bottom_right_corner(self) -> [int, int]:
         return self.x_right, self.y_bottom
+
+    def __str__(self):
+        return f"(({self.x_left}, {self.y_top}), ({self.x_right}, {self.y_bottom}))"

@@ -36,7 +36,7 @@ class Scanner(ABC):
         raise NotImplementedError("Method not implemented.")
 
     @property
-    def required_frame_coords(self) -> tuple[int, int]:
+    def required_frame_size(self) -> tuple[int, int]:
         """
         The size of the necessary frame to be provided to the scanner.
         :return: The width and height of the expected frame.

@@ -36,7 +36,7 @@ class Radar(ABC):
         raise NotImplementedError("Method not implemented.")
 
     def validate_inputs(self):
-        invader_width, invader_height = self.scanner.required_frame_coords
+        invader_width, invader_height = self.scanner.required_frame_size
         if invader_width > self.map.width or invader_height > self.map.height:
             raise MapTooSmallException(
                 "Invader pattern size cannot be bigger than map size."
