@@ -4,8 +4,9 @@ from radars.area import DPAreaRadar
 from radars.spherical import DPSphericalRadar
 from scanners.basic import BasicScanner
 
-if __name__ == '__main__':
-    invader = AsciiInvader("""
+if __name__ == "__main__":
+    invader = AsciiInvader(
+        """
 ~~~~
 --o-----o--
 ---o---o---
@@ -15,8 +16,10 @@ ooooooooooo
 o-ooooooo-o
 o-o-----o-o
 ---oo-oo---
-~~~~""")
-    invader2 = AsciiInvader("""
+~~~~"""
+    )
+    invader2 = AsciiInvader(
+        """
 ~~~~
 ---oo---
 --oooo--
@@ -26,31 +29,8 @@ oooooooo
 --o--o--
 -o-oo-o-
 o-o--o-o
-~~~~""")
-
-    frame = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ]
-
-    frame2 = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    ]
-
-    print(invader)
+~~~~"""
+    )
 
     map_string = """
 ~~~~
@@ -108,14 +88,18 @@ o--oo------o-----oo--o-oo------------oo--o------o--o-------------oo----o--------
 """
     map_ = AsciiMap(map_string)
 
+    print("Invader 1 ASCII representation:")
     print(invader.pretty_representation())
+
+    # searching for first invader pattern with an area radar
     scanner = BasicScanner(invader)
     radar = DPAreaRadar(map_, scanner)
     radar.scan()
-    invader_frames_coords = radar.get_identified_invaders()
-    for inv in invader_frames_coords:
+    identified_invaders = radar.get_identified_invaders()
+    for inv in identified_invaders:
         print(inv.pretty_representation())
 
+    # searching for the second invader pattern with an area radar
     scanner2 = BasicScanner(invader2)
     radar2 = DPAreaRadar(map_, scanner2)
     radar2.scan()
@@ -123,12 +107,14 @@ o--oo------o-----oo--o-oo------------oo--o------o--o-------------oo----o--------
     for inv in invader2_frames_coords:
         print(inv.pretty_representation())
 
+    # searching for first invader pattern with a spherical radar
     spherical_map = AsciiSphericalMap(map_string)
     spherical_radar = DPSphericalRadar(spherical_map, scanner)
     spherical_radar.scan()
     for inv in spherical_radar.get_identified_invaders():
         print(inv.pretty_representation())
 
+    # searching for the second invader pattern with a spherical radar
     spherical_radar2 = DPSphericalRadar(spherical_map, scanner2)
     spherical_radar2.scan()
     for inv in spherical_radar2.get_identified_invaders():

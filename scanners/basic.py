@@ -9,7 +9,10 @@ class BasicScanner(Scanner):
 
     Frame processing is conditional
     """
-    def __init__(self, target: Invader, signal_threshold=None, similarity_threshold=None):
+
+    def __init__(
+        self, target: Invader, signal_threshold=None, similarity_threshold=None
+    ):
         # similarity threshold is the value that defines the ratio of bits
         # that have to be in their correct position in order for the radar
         # to treat it as an invader.
@@ -39,5 +42,7 @@ class BasicScanner(Scanner):
         :param signal_bits_in_frame: Amount of signal bits in frame.
         :return: A boolean whether there is sufficient signal to process the frame.
         """
-        frame_signal_ratio = signal_bits_in_frame / self.invader_target.number_of_total_bits
+        frame_signal_ratio = (
+            signal_bits_in_frame / self.invader_target.number_of_total_bits
+        )
         return frame_signal_ratio >= self.signal_threshold

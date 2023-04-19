@@ -33,7 +33,10 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
         if current_x + invader_width - 1 < map_width:
             if current_y + invader_height - 1 < map_height:
                 self.current_coords[0] += 1
-                return [[current_x, current_y], [current_x + invader_width - 1, current_y + invader_height - 1]]
+                return [
+                    [current_x, current_y],
+                    [current_x + invader_width - 1, current_y + invader_height - 1],
+                ]
             else:
                 self.map_scanned = True
                 return []
@@ -41,7 +44,9 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
             self.current_coords = [0, current_y + 1]
             return self.get_next_frame_coords()
 
-    def compute_frame_signal_bits_amount(self, frame_coords: [[int, int], [int, int]]) -> int:
+    def compute_frame_signal_bits_amount(
+        self, frame_coords: [[int, int], [int, int]]
+    ) -> int:
         """
         Compute how many signal bits are there in the frame with the provided coordinates.
         In order to optimize this process and not parse the entire frame each time this
@@ -96,13 +101,20 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
         :return:
         """
         while frame_coords := self.get_next_frame_coords():
-            frame_signal_bits_amount = self.compute_frame_signal_bits_amount(frame_coords)
+            frame_signal_bits_amount = self.compute_frame_signal_bits_amount(
+                frame_coords
+            )
             if self.scanner.is_worth_processing_frame(frame_signal_bits_amount):
                 [x_start, y_start], [x_end, y_end] = frame_coords
                 frame = self.map.get_frame_at(x_start, y_start, x_end, y_end)
                 similarity_ratio = self.scanner.process_frame(frame)
                 if similarity_ratio >= self.scanner.similarity_threshold:
-                    identified_invader = self.identified_invader_class(self.scanner.invader_target, frame, similarity_ratio, frame_coords)
+                    identified_invader = self.identified_invader_class(
+                        self.scanner.invader_target,
+                        frame,
+                        similarity_ratio,
+                        frame_coords,
+                    )
                     self.identified_invaders.append(identified_invader)
 
     def get_identified_invaders(self) -> list[IdentifiedInvader]:

@@ -35,7 +35,9 @@ class Invader(PrettyRepresentationABC, ABC):
         self._signal_ratio = self.number_of_signal_bits / self.number_of_total_bits
 
         if self._number_of_signal_bits == 0:
-            raise NoSignalException("Invader pattern does not contain any signal! You won't be able to search for invisible Invaders. At least not now ;)")
+            raise NoSignalException(
+                "Invader pattern does not contain any signal! You won't be able to search for invisible Invaders. At least not now ;)"
+            )
 
     @property
     def pattern(self) -> Frame:
@@ -94,7 +96,7 @@ class Invader(PrettyRepresentationABC, ABC):
         return len(self.pattern) * len(self.pattern[0])
 
     def __str__(self):
-        return '\n'.join([''.join(map(str, row)) for row in self.pattern])
+        return "\n".join(["".join(map(str, row)) for row in self.pattern])
 
 
 class IdentifiedInvader(PrettyRepresentationABC, ABC):
@@ -103,7 +105,14 @@ class IdentifiedInvader(PrettyRepresentationABC, ABC):
     contains information about the similarity ratio, coordinates on map, and
     original Invader it was matched against.
     """
-    def __init__(self, original: Invader, binary_matrix: Frame, similarity_ratio: float, frame_coords_on_map: list[int]):
+
+    def __init__(
+        self,
+        original: Invader,
+        binary_matrix: Frame,
+        similarity_ratio: float,
+        frame_coords_on_map: list[int],
+    ):
         self.original_invader = original
         self.pattern = binary_matrix
         self.similarity_ratio = similarity_ratio

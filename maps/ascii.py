@@ -20,7 +20,7 @@ class AsciiMap(AsciiToBinaryMixin, BinaryToAsciiMixin, Map):
     def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
         frame = Frame([])
         for i in range(y_start, y_end + 1):
-            row = self.representation[i][x_start:x_end+1]
+            row = self.representation[i][x_start : x_end + 1]
             frame.append(row)
         return frame
 
@@ -34,6 +34,7 @@ class AsciiSphericalMap(AsciiMap, Map):
     """
     A map represented as ASCII characters.
     """
+
     def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
         """
         Allows retrieval of frames assuming the map is spherical and coordinates
@@ -48,12 +49,12 @@ class AsciiSphericalMap(AsciiMap, Map):
         """
         frame = Frame([])
         if y_start <= y_end:
-            for row in self.representation[y_start:y_end+1]:
+            for row in self.representation[y_start : y_end + 1]:
                 frame.append(self.get_row_subset(row, x_start, x_end))
         else:
             for row in self.representation[y_start:]:
                 frame.append(self.get_row_subset(row, x_start, x_end))
-            for row in self.representation[:y_end+1]:
+            for row in self.representation[: y_end + 1]:
                 frame.append(self.get_row_subset(row, x_start, x_end))
 
         return frame
@@ -61,6 +62,6 @@ class AsciiSphericalMap(AsciiMap, Map):
     @staticmethod
     def get_row_subset(row: list[int], x_start: int, x_end: int):
         if x_start <= x_end:
-            return row[x_start:x_end + 1]
+            return row[x_start : x_end + 1]
         else:
-            return row[x_start:] + row[:x_end + 1]
+            return row[x_start:] + row[: x_end + 1]

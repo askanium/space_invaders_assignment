@@ -4,7 +4,6 @@ from maps.base import Map
 
 
 class AsciiToBinaryMixin:
-
     @staticmethod
     def convert_ascii_to_binary_matrix(ascii_string: str) -> Frame:
         """
@@ -24,13 +23,15 @@ class AsciiToBinaryMixin:
             return Frame([])
 
         matrix = []
-        for row in ascii_string.split('\n'):
+        for row in ascii_string.split("\n"):
             matrix_row = []
             for char in row:
-                if char not in '-o':
-                    raise InvalidAsciiCharacterException(f"Found {char} character. Only `o` and `-` are allowed.")
+                if char not in "-o":
+                    raise InvalidAsciiCharacterException(
+                        f"Found {char} character. Only `o` and `-` are allowed."
+                    )
 
-                matrix_row.append(int(char == 'o'))
+                matrix_row.append(int(char == "o"))
             matrix.append(matrix_row)
         return Frame(matrix)
 
@@ -46,14 +47,15 @@ class BinaryToAsciiMixin:
         :param binary_matrix: The matrix to convert to ASCII string.
         :return: The converted ASCII string.
         """
-        ascii_string = ''
+        ascii_string = ""
         for row in binary_matrix:
-            ascii_string = f"{ascii_string}{''.join('o' if bit else '-' for bit in row)}\n"
+            ascii_string = (
+                f"{ascii_string}{''.join('o' if bit else '-' for bit in row)}\n"
+            )
         return ascii_string
 
 
 class DynamicProgrammingMixin:
-
     @staticmethod
     def compute_dp_matrix(map_: Map) -> list[list[int]]:
         """
@@ -85,8 +87,8 @@ class DynamicProgrammingMixin:
             cumulative_row = dp_row[:]  # make a copy
 
             for i, bit in enumerate(row):
-                cumulative_row[i+1] = cumulative_row[i] + bit
-                dp_row[i+1] = dp_prev_row[i + 1] + bit + cumulative_row[i]
+                cumulative_row[i + 1] = cumulative_row[i] + bit
+                dp_row[i + 1] = dp_prev_row[i + 1] + bit + cumulative_row[i]
 
             dp_matrix.append(dp_row[1:])
             dp_prev_row = dp_row

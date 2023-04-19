@@ -6,19 +6,25 @@ from core.types import Frame
 from scanners.basic import BasicScanner
 
 
-@pytest.mark.parametrize("invader_signal,signal,similarity,expected_signal,expected_similarity",
-                         [
-                             (0.6, None, None, 0.4, 0.7),
-                             (0.1, 0.75, 0.85, 0.75, 0.85),
-                             (0.25, None, 0.85, 0.1, 0.85),
-                         ])
-def test_basic_scanner_init(invader_signal, signal, similarity, expected_signal, expected_similarity):
+@pytest.mark.parametrize(
+    "invader_signal,signal,similarity,expected_signal,expected_similarity",
+    [
+        (0.6, None, None, 0.4, 0.7),
+        (0.1, 0.75, 0.85, 0.75, 0.85),
+        (0.25, None, 0.85, 0.1, 0.85),
+    ],
+)
+def test_basic_scanner_init(
+    invader_signal, signal, similarity, expected_signal, expected_similarity
+):
     # setup
     invader = mock.Mock()
     invader.signal_ratio = invader_signal
 
     # run
-    scanner = BasicScanner(invader, signal_threshold=signal, similarity_threshold=similarity)
+    scanner = BasicScanner(
+        invader, signal_threshold=signal, similarity_threshold=similarity
+    )
 
     # assert
     assert scanner.signal_threshold == pytest.approx(expected_signal)

@@ -11,6 +11,7 @@ class Scanner(ABC):
     Frame processing is conditional. There is a method that can decide whether
     the amount of signal in the frame is sufficient to contain a potential invader.
     """
+
     def __init__(self, invader: Invader, similarity_threshold: float):
         self.invader_target = invader
         self.similarity_threshold = similarity_threshold

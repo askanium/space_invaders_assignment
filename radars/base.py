@@ -11,6 +11,7 @@ class Radar(ABC):
     """
     A radar class that can scan a map and identify potential locations of an invader.
     """
+
     identified_invader_class: IdentifiedInvader = AsciiIdentifiedInvader
 
     def __init__(self, map_: Map, scanner: Scanner):
@@ -37,4 +38,6 @@ class Radar(ABC):
     def validate_inputs(self):
         invader_width, invader_height = self.scanner.required_frame_coords
         if invader_width > self.map.width or invader_height > self.map.height:
-            raise MapTooSmallException("Invader pattern size cannot be bigger than map size.")
+            raise MapTooSmallException(
+                "Invader pattern size cannot be bigger than map size."
+            )

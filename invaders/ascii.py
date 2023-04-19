@@ -1,4 +1,8 @@
-from core.exceptions import EmptyFrameException, NonMatchingFramesException, EmptyInvaderException
+from core.exceptions import (
+    EmptyFrameException,
+    NonMatchingFramesException,
+    EmptyInvaderException,
+)
 from core.mixins import AsciiToBinaryMixin
 from core.types import Frame
 from invaders.base import Invader
@@ -29,7 +33,9 @@ class AsciiInvader(AsciiToBinaryMixin, Invader):
             raise NonMatchingFramesException()
 
     def pretty_representation(self):
-        ascii_string = ''
+        ascii_string = ""
         for row in self.pattern:
-            ascii_string = f"{ascii_string}{''.join('o' if bit else '-' for bit in row)}\n"
+            ascii_string = (
+                f"{ascii_string}{''.join('o' if bit else '-' for bit in row)}\n"
+            )
         return ascii_string

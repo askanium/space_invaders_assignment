@@ -20,6 +20,7 @@ class Map(ABC):
     101000001000001
     000110110000000
     """
+
     def __init__(self, representation: Frame):
         self.representation = representation
 
@@ -42,9 +43,9 @@ class Map(ABC):
     def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
         frame = Frame([])
         for i in range(y_start, y_end + 1):
-            row = self.representation[i][x_start:x_end+1]
+            row = self.representation[i][x_start : x_end + 1]
             frame.append(row)
         return frame
 
     def __str__(self):
-        return '\n'.join([''.join(map(str, row)) for row in self.representation])
+        return "\n".join(["".join(map(str, row)) for row in self.representation])

@@ -39,7 +39,7 @@ def test_ascii_map_initialization_raises():
         AsciiMap(ascii_string)
 
 
-@patch.object(AsciiMap, 'convert_ascii_to_binary_matrix')
+@patch.object(AsciiMap, "convert_ascii_to_binary_matrix")
 def test_ascii_map_get_frame_at(mocked_convert_method, map_binary_repr):
     # setup
     mocked_convert_method.return_value = map_binary_repr
@@ -56,15 +56,25 @@ def test_ascii_map_get_frame_at(mocked_convert_method, map_binary_repr):
     assert frame == expected_result
 
 
-@pytest.mark.parametrize("x_start,y_start,x_end,y_end,expected_result",
-                         [
-                             (1, 1, 3, 2, [[1, 0, 1], [0, 1, 0]]),  # doesn't wrap
-                             (4, 1, 1, 2, [[0, 0, 1], [0, 0, 0]]),  # wrap horizontally
-                             (1, 2, 3, 0, [[0, 1, 0], [0, 1, 0]]),  # wrap vertically
-                             (4, 2, 1, 1, [[0, 0, 0], [0, 0, 0], [0, 0, 1]]),  # wrap both ways
-                         ])
-@patch.object(AsciiSphericalMap, 'convert_ascii_to_binary_matrix')
-def test_ascii_spherical_map_get_frame_at(mocked_convert_method, x_start, y_start, x_end, y_end, expected_result, map_binary_repr):
+@pytest.mark.parametrize(
+    "x_start,y_start,x_end,y_end,expected_result",
+    [
+        (1, 1, 3, 2, [[1, 0, 1], [0, 1, 0]]),  # doesn't wrap
+        (4, 1, 1, 2, [[0, 0, 1], [0, 0, 0]]),  # wrap horizontally
+        (1, 2, 3, 0, [[0, 1, 0], [0, 1, 0]]),  # wrap vertically
+        (4, 2, 1, 1, [[0, 0, 0], [0, 0, 0], [0, 0, 1]]),  # wrap both ways
+    ],
+)
+@patch.object(AsciiSphericalMap, "convert_ascii_to_binary_matrix")
+def test_ascii_spherical_map_get_frame_at(
+    mocked_convert_method,
+    x_start,
+    y_start,
+    x_end,
+    y_end,
+    expected_result,
+    map_binary_repr,
+):
     # setup
     mocked_convert_method.return_value = map_binary_repr
     ascii_map = AsciiSphericalMap("")

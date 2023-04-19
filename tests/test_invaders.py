@@ -1,6 +1,11 @@
 import pytest
 
-from core.exceptions import EmptyFrameException, EmptyInvaderException, NonMatchingFramesException, NoSignalException
+from core.exceptions import (
+    EmptyFrameException,
+    EmptyInvaderException,
+    NonMatchingFramesException,
+    NoSignalException,
+)
 from core.types import Frame
 from invaders.ascii import AsciiInvader
 
@@ -32,9 +37,7 @@ def test_ascii_invader_raises_empty_invader_exception():
 
 def test_ascii_invader_validate_frame_raises_non_matching_frames_exception():
     # setup
-    frame = [
-        [0, 1, 0]
-    ]
+    frame = [[0, 1, 0]]
     invader = AsciiInvader("-o")
 
     # run & assert
@@ -49,13 +52,7 @@ def test_ascii_invader_match_against_frame():
         [1, 1, 1, 1],
         [0, 0, 0, 0],
     ]
-    invader = AsciiInvader(
-        f"~~~\n"
-        f"oo--\n"
-        f"oooo\n"
-        f"--oo\n"
-        f"~~~"
-    )
+    invader = AsciiInvader(f"~~~\n" f"oo--\n" f"oooo\n" f"--oo\n" f"~~~")
     expected_probability = 0.75
 
     # run

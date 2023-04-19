@@ -59,7 +59,9 @@ class DPSphericalRadar(DPAreaRadar):
             self.current_coords = [0, current_y + 1]
             return self.get_next_frame_coords()
 
-    def compute_frame_signal_bits_amount(self, frame_coords: [[int, int], [int, int]]) -> int:
+    def compute_frame_signal_bits_amount(
+        self, frame_coords: [[int, int], [int, int]]
+    ) -> int:
         """
         If the frame does not wrap around on any direction, use the inherited way
         of DP matrix, which is optimized.
