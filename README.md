@@ -141,7 +141,7 @@ instance, `AsciiSphericalMap` is a derived class of `AsciiMap`, and it is used i
 
 #### Interface Segregation Principle
 
-There is a `PrettyRepresentationABC` specific class that is shared only to the relevant
+There is a `PrettyRepresentationABC` specific class that is inherited only by relevant
 classes.
 
 #### Dependency Inversion Principle
@@ -167,7 +167,7 @@ discussed with the team to agree on a convention around line length)
 
 To run tests with coverage, use `pytest --cov=. tests/` from project root.
 
-Current test coverage (without `main.py`):
+Current test coverage (with `main.py` code commeented out):
 ```text
 ---------- coverage: platform darwin, python 3.11.3-final-0 ----------
 Name                         Stmts   Miss  Cover
