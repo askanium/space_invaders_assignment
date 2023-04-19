@@ -7,6 +7,7 @@ from core.types import Frame
 from invaders.identified import AsciiIdentifiedInvader
 from maps.ascii import AsciiMap
 from radars.area import DPAreaRadar
+from radars.spherical import DPSphericalRadar
 
 
 @mock.patch.object(DPAreaRadar, 'compute_dp_matrix')
@@ -199,3 +200,113 @@ def test_dp_area_radar_scan_high_frame_signal_amount(mocked_compute_dp, mocket_c
 
     assert len(radar.get_identified_invaders()) == 1
     assert radar.get_identified_invaders()[0].pretty_representation() == expected_identified_invader.pretty_representation()
+
+
+@mock.patch.object(DPAreaRadar, 'compute_dp_matrix')
+def test_dp_spherical_radar_get_next_frame_coords(mocked_method):
+    # setup
+    map_ = mock.Mock()
+    map_.width = 3
+    map_.height = 4
+
+    scanner = mock.Mock()
+    scanner.required_frame_coords = [2, 3]
+    radar = DPSphericalRadar(map_, scanner)
+    expected_result = [
+        [[0, 0], [1, 2]],
+        [[1, 0], [2, 2]],
+        [[2, 0], [0, 2]],
+        [[0, 1], [1, 3]],
+        [[1, 1], [2, 3]],
+        [[2, 1], [0, 3]],
+        [[0, 2], [1, 0]],
+        [[1, 2], [2, 0]],
+        [[2, 2], [0, 0]],
+        [[0, 3], [1, 1]],
+        [[1, 3], [2, 1]],
+        [[2, 3], [0, 1]],
+    ]
+    actual_result = []
+
+    # run
+    while frame_coords := radar.get_next_frame_coords():
+        actual_result.append(frame_coords)
+
+    # assert
+    assert actual_result == expected_result
+
+
+def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_does_not_wrap():
+    # setup
+    map_ = AsciiMap(
+        f"-ooo\n"
+        f"o-o-\n"
+        f"o--o\n"
+    )
+    scanner = mock.Mock()
+    scanner.required_frame_coords = [1, 1]
+    radar = DPSphericalRadar(map_, scanner)
+    expected_result = 5
+
+    # run
+    actual_result = radar.compute_frame_signal_bits_amount([[0, 0], [2, 2]])
+
+    # assert
+    assert actual_result == expected_result
+
+
+def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_horizontally():
+    # setup
+    map_ = AsciiMap(
+        f"-ooo\n"
+        f"o-o-\n"
+        f"o--o\n"
+    )
+    scanner = mock.Mock()
+    scanner.required_frame_coords = [1, 1]
+    radar = DPSphericalRadar(map_, scanner)
+    expected_result = 4
+
+    # run
+    actual_result = radar.compute_frame_signal_bits_amount([[2, 0], [0, 1]])
+
+    # assert
+    assert actual_result == expected_result
+
+
+def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_vertically():
+    # setup
+    map_ = AsciiMap(
+        f"-ooo\n"
+        f"o-o-\n"
+        f"o--o\n"
+    )
+    scanner = mock.Mock()
+    scanner.required_frame_coords = [1, 1]
+    radar = DPSphericalRadar(map_, scanner)
+    expected_result = 5
+
+    # run
+    actual_result = radar.compute_frame_signal_bits_amount([[0, 2], [2, 1]])
+
+    # assert
+    assert actual_result == expected_result
+
+
+def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_both_ways():
+    # setup
+    map_ = AsciiMap(
+        f"-ooo\n"
+        f"o-o-\n"
+        f"o--o\n"
+    )
+    scanner = mock.Mock()
+    scanner.required_frame_coords = [1, 1]
+    radar = DPSphericalRadar(map_, scanner)
+    expected_result = 7
+
+    # run
+    actual_result = radar.compute_frame_signal_bits_amount([[3, 2], [2, 1]])
+
+    # assert
+    assert actual_result == expected_result

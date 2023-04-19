@@ -1,6 +1,7 @@
 from invaders.ascii import AsciiInvader
-from maps.ascii import AsciiMap
+from maps.ascii import AsciiMap, AsciiSphericalMap
 from radars.area import DPAreaRadar
+from radars.spherical import DPSphericalRadar
 from scanners.basic import BasicScanner
 
 if __name__ == '__main__':
@@ -120,4 +121,15 @@ o--oo------o-----oo--o-oo------------oo--o------o--o-------------oo----o--------
     radar2.scan()
     invader2_frames_coords = radar2.get_identified_invaders()
     for inv in invader2_frames_coords:
+        print(inv.pretty_representation())
+
+    spherical_map = AsciiSphericalMap(map_string)
+    spherical_radar = DPSphericalRadar(spherical_map, scanner)
+    spherical_radar.scan()
+    for inv in spherical_radar.get_identified_invaders():
+        print(inv.pretty_representation())
+
+    spherical_radar2 = DPSphericalRadar(spherical_map, scanner2)
+    spherical_radar2.scan()
+    for inv in spherical_radar2.get_identified_invaders():
         print(inv.pretty_representation())

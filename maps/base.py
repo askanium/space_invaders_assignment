@@ -20,7 +20,8 @@ class Map(ABC):
     101000001000001
     000110110000000
     """
-    representation: Frame
+    def __init__(self, representation: Frame):
+        self.representation = representation
 
     @abstractmethod
     def print_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int):
@@ -37,6 +38,7 @@ class Map(ABC):
     def height(self):
         return len(self.representation)
 
+    @abstractmethod
     def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
         frame = Frame([])
         for i in range(y_start, y_end + 1):
