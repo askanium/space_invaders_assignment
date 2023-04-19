@@ -34,7 +34,12 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
         if current_x + invader_width - 1 < map_width:
             if current_y + invader_height - 1 < map_height:
                 self.current_coords[0] += 1
-                return FrameCoords(current_x, current_y, current_x + invader_width - 1, current_y + invader_height - 1)
+                return FrameCoords(
+                    current_x,
+                    current_y,
+                    current_x + invader_width - 1,
+                    current_y + invader_height - 1,
+                )
             else:
                 self.map_scanned = True
                 return None
@@ -42,9 +47,7 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
             self.current_coords = [0, current_y + 1]
             return self.get_next_frame_coords()
 
-    def compute_frame_signal_bits_amount(
-        self, frame_coords: FrameCoords
-    ) -> int:
+    def compute_frame_signal_bits_amount(self, frame_coords: FrameCoords) -> int:
         """
         Compute how many signal bits are there in the frame with the provided coordinates.
         In order to optimize this process and not parse the entire frame each time this
@@ -83,11 +86,15 @@ class DPAreaRadar(DynamicProgrammingMixin, Radar):
         c_signal_bits = 0
         d_signal_bits = self.dp_matrix[frame_coords.y_bottom][frame_coords.x_right]
         if frame_coords.x_left > 0:
-            c_signal_bits = self.dp_matrix[frame_coords.y_bottom][frame_coords.x_left - 1]
+            c_signal_bits = self.dp_matrix[frame_coords.y_bottom][
+                frame_coords.x_left - 1
+            ]
         if frame_coords.y_top > 0:
             b_signal_bits = self.dp_matrix[frame_coords.y_top - 1][frame_coords.x_right]
         if frame_coords.x_left > 0 and frame_coords.y_top > 0:
-            a_signal_bits = self.dp_matrix[frame_coords.y_top - 1][frame_coords.x_left - 1]
+            a_signal_bits = self.dp_matrix[frame_coords.y_top - 1][
+                frame_coords.x_left - 1
+            ]
 
         return d_signal_bits - c_signal_bits - b_signal_bits + a_signal_bits
 

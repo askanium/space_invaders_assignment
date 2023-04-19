@@ -48,7 +48,9 @@ def test_dp_area_radar_validate_inputs_raises_exception(mock_compute_dp_matrix):
         (0, 0, 2, 2, 6),  # frame at top left
     ],
 )
-def test_dp_area_radar_compute_frame_signal_bits_amount(x_start, y_start, x_end, y_end, expected_result):
+def test_dp_area_radar_compute_frame_signal_bits_amount(
+    x_start, y_start, x_end, y_end, expected_result
+):
     # setup
     map_ = AsciiMap("o-oo-\n" "o-o-o\n" "oo--o\n")
     scanner = mock.Mock()
@@ -204,7 +206,9 @@ def test_dp_spherical_radar_get_next_frame_coords(mocked_method):
         (3, 2, 2, 1, 7),  # wraps both ways
     ],
 )
-def test_dp_spherical_radar_compute_frame_signal_bits_amount(x_start, y_start, x_end, y_end, expected_result):
+def test_dp_spherical_radar_compute_frame_signal_bits_amount(
+    x_start, y_start, x_end, y_end, expected_result
+):
     # setup
     map_ = AsciiMap("-ooo\n" "o-o-\n" "o--o\n")
     scanner = mock.Mock()

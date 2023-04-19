@@ -47,13 +47,21 @@ class AsciiSphericalMap(AsciiMap, Map):
         """
         frame = Frame([])
         if frame_coords.y_top <= frame_coords.y_bottom:
-            for row in self.representation[frame_coords.y_top:frame_coords.y_bottom + 1]:
-                frame.append(self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right))
+            for row in self.representation[
+                frame_coords.y_top:frame_coords.y_bottom + 1
+            ]:
+                frame.append(
+                    self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right)
+                )
         else:
             for row in self.representation[frame_coords.y_top:]:
-                frame.append(self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right))
+                frame.append(
+                    self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right)
+                )
             for row in self.representation[:frame_coords.y_bottom + 1]:
-                frame.append(self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right))
+                frame.append(
+                    self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right)
+                )
 
         return frame
 
@@ -62,4 +70,4 @@ class AsciiSphericalMap(AsciiMap, Map):
         if x_start <= x_end:
             return row[x_start:x_end + 1]
         else:
-            return row[x_start:] + row[: x_end + 1]
+            return row[x_start:] + row[:x_end + 1]
