@@ -106,7 +106,7 @@ Below you can find an example of how it works in code. Check out `main.py` for m
 An example of `print(identified_invader.pretty_representation())` would look like:
 ```python
     Similarity ratio: 0.859375
-    Coords on map: [[82, 41], [89, 48]]
+    Coords on map: ((18, 49), (25, 6))
     Visual representation:
     ---oo---
     --ooooo-
