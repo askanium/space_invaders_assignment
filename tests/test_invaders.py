@@ -52,7 +52,7 @@ def test_ascii_invader_match_against_frame():
         [1, 1, 1, 1],
         [0, 0, 0, 0],
     ]
-    invader = AsciiInvader(f"~~~\n" f"oo--\n" f"oooo\n" f"--oo\n" f"~~~")
+    invader = AsciiInvader("~~~\n" "oo--\n" "oooo\n" "--oo\n" "~~~")
     expected_probability = 0.75
 
     # run

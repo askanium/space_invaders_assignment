@@ -40,7 +40,7 @@ def test_dp_area_radar_validate_inputs_raises_exception(mock_compute_dp_matrix):
 
 def test_dp_area_radar_compute_frame_signal_bits_amount():
     # setup
-    map_ = AsciiMap(f"o-oo-\n" f"o-o-o\n" f"oo--o\n")
+    map_ = AsciiMap("o-oo-\n" "o-o-o\n" "oo--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPAreaRadar(map_, scanner)
@@ -55,7 +55,7 @@ def test_dp_area_radar_compute_frame_signal_bits_amount():
 
 def test_dp_area_radar_compute_frame_signal_bits_amount_case_frame_at_top_of_map():
     # setup
-    map_ = AsciiMap(f"o-oo-\n" f"o-o-o\n" f"oo--o\n")
+    map_ = AsciiMap("o-oo-\n" "o-o-o\n" "oo--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPAreaRadar(map_, scanner)
@@ -70,7 +70,7 @@ def test_dp_area_radar_compute_frame_signal_bits_amount_case_frame_at_top_of_map
 
 def test_dp_area_radar_compute_frame_signal_bits_amount_case_frame_at_left_of_map():
     # setup
-    map_ = AsciiMap(f"o-oo-\n" f"o-o-o\n" f"oo--o\n")
+    map_ = AsciiMap("o-oo-\n" "o-o-o\n" "oo--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPAreaRadar(map_, scanner)
@@ -85,7 +85,7 @@ def test_dp_area_radar_compute_frame_signal_bits_amount_case_frame_at_left_of_ma
 
 def test_dp_area_radar_compute_frame_signal_bits_amount_case_frame_at_top_left_of_map():
     # setup
-    map_ = AsciiMap(f"o-oo-\n" f"o-o-o\n" f"oo--o\n")
+    map_ = AsciiMap("o-oo-\n" "o-o-o\n" "oo--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPAreaRadar(map_, scanner)
@@ -231,7 +231,7 @@ def test_dp_spherical_radar_get_next_frame_coords(mocked_method):
 
 def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_does_not_wrap():
     # setup
-    map_ = AsciiMap(f"-ooo\n" f"o-o-\n" f"o--o\n")
+    map_ = AsciiMap("-ooo\n" "o-o-\n" "o--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPSphericalRadar(map_, scanner)
@@ -246,7 +246,7 @@ def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_does_not
 
 def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_horizontally():
     # setup
-    map_ = AsciiMap(f"-ooo\n" f"o-o-\n" f"o--o\n")
+    map_ = AsciiMap("-ooo\n" "o-o-\n" "o--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPSphericalRadar(map_, scanner)
@@ -261,7 +261,7 @@ def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_ho
 
 def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_vertically():
     # setup
-    map_ = AsciiMap(f"-ooo\n" f"o-o-\n" f"o--o\n")
+    map_ = AsciiMap("-ooo\n" "o-o-\n" "o--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPSphericalRadar(map_, scanner)
@@ -276,7 +276,7 @@ def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_ve
 
 def test_dp_spherical_radar_compute_frame_signal_bits_amount_case_frame_wraps_both_ways():
     # setup
-    map_ = AsciiMap(f"-ooo\n" f"o-o-\n" f"o--o\n")
+    map_ = AsciiMap("-ooo\n" "o-o-\n" "o--o\n")
     scanner = mock.Mock()
     scanner.required_frame_coords = [1, 1]
     radar = DPSphericalRadar(map_, scanner)
