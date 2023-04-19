@@ -103,6 +103,20 @@ Below you can find an example of how it works in code. Check out `main.py` for m
     for identified_invader in identified_invaders:
         print(identified_invader.pretty_representation())
 ```
+An example of `print(identified_invader.pretty_representation())` would look like:
+```python
+    Similarity ratio: 0.859375
+    Coords on map: [[82, 41], [89, 48]]
+    Visual representation:
+    ---oo---
+    --ooooo-
+    -oo-ooo-
+    oo-o-ooo
+    o-oooooo
+    --o--o--
+    oo-oo-o-
+    --oooo-o
+```
 
 ## Adherence to SOLID design principles
 
