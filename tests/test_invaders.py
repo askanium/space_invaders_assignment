@@ -60,3 +60,15 @@ def test_ascii_invader_match_against_frame():
 
     # assert
     assert match_probability == expected_probability
+
+
+def test_ascii_invader_pretty_representation():
+    # setup
+    invader = AsciiInvader("~~~\n" "oo--\n" "oooo\n" "--oo\n" "~~~")
+    expected_result = "oo--\n" "oooo\n" "--oo\n"
+
+    # run
+    actual_result = invader.pretty_representation()
+
+    # assert
+    assert actual_result == expected_result

@@ -62,3 +62,21 @@ def test_basic_scanner_is_worth_processing_frame():
 
     # assert
     assert actual_result == expected_result
+
+
+def test_basic_scanner_required_frame_size():
+    # setup
+    invader = mock.Mock()
+    invader.width = 8
+    invader.height = 5
+    invader.number_of_total_bits = 10
+    invader.signal_threshold = 0.5
+    invader.signal_ratio = 0.4
+    scanner = BasicScanner(invader)
+    expected_result = 8, 5
+
+    # run
+    actual_result = scanner.required_frame_size
+
+    # assert
+    assert actual_result == expected_result
