@@ -161,3 +161,44 @@ Similarly, the `Scanner` class also relies on abstract `Invader` type.
 
 The project uses `pytest` framework for running tests and `black` and `flake8` for
 keeping the code well formatted.
+
+The `flake8 --extend-ignore=E501 .` is used to ignore long lines (this would be
+discussed with the team to agree on a convention around line length)
+
+To run tests with coverage, use `pytest --cov=. tests/` from project root.
+
+Current test coverage (without `main.py`):
+```text
+---------- coverage: platform darwin, python 3.11.3-final-0 ----------
+Name                         Stmts   Miss  Cover
+------------------------------------------------
+core/__init__.py                 0      0   100%
+core/exceptions.py              14      0   100%
+core/mixins.py                  38      0   100%
+core/types.py                    2      0   100%
+core/utils.py                   14      0   100%
+invaders/__init__.py             0      0   100%
+invaders/ascii.py               24      0   100%
+invaders/base.py                53      5    91%
+invaders/identified.py           7      0   100%
+main.py                          7      7     0%
+maps/__init__.py                 0      0   100%
+maps/ascii.py                   38      3    92%
+maps/base.py                    22      3    86%
+radars/__init__.py               0      0   100%
+radars/area.py                  50      1    98%
+radars/base.py                  22      2    91%
+radars/spherical.py             49      1    98%
+scanners/__init__.py             0      0   100%
+scanners/base.py                16      2    88%
+scanners/basic.py               16      0   100%
+tests/__init__.py                0      0   100%
+tests/test_frame_coords.py       9      0   100%
+tests/test_invaders.py          32      0   100%
+tests/test_maps.py              31      0   100%
+tests/test_mixins.py            23      0   100%
+tests/test_radars.py           117      0   100%
+tests/test_scanners.py          41      0   100%
+------------------------------------------------
+TOTAL                          625     24    96%
+```
