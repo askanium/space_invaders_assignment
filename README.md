@@ -61,6 +61,20 @@ Currently, there is only one type of scanner, the `BasicScanner`. To add other t
 scanners, you should inherit from `scanners.base.Scanner` and provide an implementation
 for `process_frame` and `is_worth_processing_frame` methods.
 
+The `BasicScanner` can take two optional arguments: 
+
+1. a `signal_threshold` value, that indicates what is the signal threshold a frame should
+have in order for it to be properly scanned. For instance, if the signal ratio is small 
+(meaning there are few bits of information in the frame), it doesn't make sense to do a 
+more heavy-weight processing of the frame, since the probability is high there is no invader
+in there. If no threshold is provided, 80% of the signal ratio of the target invader is used
+as a default value, but not less than `0.1`.
+2. a `similarity_threshold` value, that indicates what is the desired accuracy of the scanner.
+For instance, a similarity of `0.8` means any frame that has at least 80% of matching bits
+with the original invader pattern will be considered as an `IdentifiedInvader`. Usually,
+the smaller an invader pattern is, the bigger the similarity ratio should be in order for 
+the scanner to perform well. The default is `0.7` 
+
 ### Radar
 
 A `Radar` is responsible for using a `Scanner` that knows how to identify an
@@ -74,7 +88,7 @@ To use a radar, you must provide a `Scanner` and a `Map` instance to it. The sea
 performed by running the `.scan()` method. Once it is done, you can obtain a list of
 `IdentifiedInvader`s by running `.get_identified_invaders()` method.
 
-### IdentifiedInvader
+### Identified Invader
 
 Finally, an `IdentifiedInvader` is a subtype of `Invader` that has a reference to the
 original invader, the similarity ratio to the original invader, as well as the coordinates
