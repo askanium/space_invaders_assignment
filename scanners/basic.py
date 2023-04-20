@@ -21,10 +21,10 @@ class BasicScanner(Scanner):
 
         super().__init__(target, similarity_threshold)
 
-        # in case no threshold is provided, consider it as the target
-        # invader's signal ratio - a constant factor of 0.2 (taken at random).
+        # in case no threshold is provided, consider it as 80% of the target
+        # invader's signal ratio.
         if not signal_threshold:
-            signal_threshold = max(0.1, target.signal_ratio - 0.2)
+            signal_threshold = max(0.1, target.signal_ratio * 0.8)
 
         self.signal_threshold = signal_threshold
 

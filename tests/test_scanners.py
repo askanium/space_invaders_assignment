@@ -9,9 +9,9 @@ from scanners.basic import BasicScanner
 @pytest.mark.parametrize(
     "invader_signal,signal,similarity,expected_signal,expected_similarity",
     [
-        (0.6, None, None, 0.4, 0.7),
+        (0.6, None, None, 0.6 * 0.8, 0.7),
         (0.1, 0.75, 0.85, 0.75, 0.85),
-        (0.25, None, 0.85, 0.1, 0.85),
+        (0.1, None, 0.85, 0.1, 0.85),
     ],
 )
 def test_basic_scanner_init(
@@ -76,7 +76,7 @@ def test_basic_scanner_required_frame_size():
     expected_result = 8, 5
 
     # run
-    actual_result = scanner.required_frame_size
+    actual_result = scanner.required_frame_coords
 
     # assert
     assert actual_result == expected_result
