@@ -1,3 +1,4 @@
+from core.utils import FrameCoords
 from radars.area import DPAreaRadar
 
 
@@ -7,7 +8,7 @@ class DPSphericalRadar(DPAreaRadar):
     Uses dynamic programming to improve performance of search.
     """
 
-    def get_next_frame_coords(self) -> [[int, int], [int, int]]:
+    def get_next_frame_coords(self) -> FrameCoords | None:
         """
         Compute the coordinates of the next available frame within the map.
 
@@ -30,9 +31,9 @@ class DPSphericalRadar(DPAreaRadar):
         :return: A list made of the coordinates of the top left and bottom right points.
         """
         if self.map_scanned:
-            return []
+            return None
 
-        invader_width, invader_height = self.scanner.required_frame_coords
+        invader_width, invader_height = self.scanner.required_frame_size
         current_x, current_y = self.current_coords
         map_width, map_height = self.map.width, self.map.height
 
@@ -51,17 +52,15 @@ class DPSphericalRadar(DPAreaRadar):
                 if y_bottom >= map_height:
                     y_bottom -= map_height
 
-                return [[current_x, current_y], [x_right, y_bottom]]
+                return FrameCoords(current_x, current_y, x_right, y_bottom)
             else:
                 self.map_scanned = True
-                return []
+                return None
         else:
             self.current_coords = [0, current_y + 1]
             return self.get_next_frame_coords()
 
-    def compute_frame_signal_bits_amount(
-        self, frame_coords: [[int, int], [int, int]]
-    ) -> int:
+    def compute_frame_signal_bits_amount(self, frame_coords: FrameCoords) -> int:
         """
         If the frame does not wrap around on any direction, use the inherited way
         of DP matrix, which is optimized.
@@ -85,8 +84,10 @@ class DPSphericalRadar(DPAreaRadar):
         :param frame_coords: The coordinates of the frame for which to compute the signal bits
         :return: Number of signal bits in the frame.
         """
-        [top_x, top_y], [bottom_x, bottom_y] = frame_coords
-        if top_x <= bottom_x and top_y <= bottom_y:
+        if (
+            frame_coords.x_left <= frame_coords.x_right
+            and frame_coords.y_top <= frame_coords.y_bottom
+        ):
             return super().compute_frame_signal_bits_amount(frame_coords)
 
         a_signal_bits = 0
@@ -97,30 +98,52 @@ class DPSphericalRadar(DPAreaRadar):
         # top-left corner of the frame, to the bottom-right corner of the map
         map_width_x = self.map.width - 1
         map_height_y = self.map.height - 1
-        d_bottom_x = bottom_x
-        d_bottom_y = bottom_y
+        d_right_x = frame_coords.x_right
+        d_bottom_y = frame_coords.y_bottom
 
-        # if bottom_y coordinates are wrapped, they will be smaller that the top
+        # if y_bottom coordinates are wrapped, they will be smaller that the top
         # coordinates, meaning the frame was wrapped vertically, and we need to
         # compute the signal ratio of the wrapped square as well.
-        if bottom_y < top_y:
+        if frame_coords.y_bottom < frame_coords.y_top:
             d_bottom_y = map_height_y
-            b_frame_bottom_x = bottom_x if bottom_x > top_x else map_width_x
-            b_frame_coords = [[top_x, 0], [b_frame_bottom_x, bottom_y]]
+            b_frame_x_right = (
+                frame_coords.x_right
+                if frame_coords.x_right > frame_coords.x_left
+                else map_width_x
+            )
+            b_frame_coords = FrameCoords(
+                frame_coords.x_left, 0, b_frame_x_right, frame_coords.y_bottom
+            )
             b_signal_bits = super().compute_frame_signal_bits_amount(b_frame_coords)
 
-        if bottom_x < top_x:
-            d_bottom_x = map_width_x
-            c_frame_bottom_y = bottom_y if bottom_y > top_y else map_height_y
-            c_frame_coords = [[0, top_y], [bottom_x, c_frame_bottom_y]]
+        # if x_right coordinates are wrapped, they will be smaller that the left
+        # coordinates, meaning the frame was wrapped horizontally, and we need to
+        # compute the signal ratio of the wrapped square as well.
+        if frame_coords.x_right < frame_coords.x_left:
+            d_right_x = map_width_x
+            c_frame_bottom_y = (
+                frame_coords.y_bottom
+                if frame_coords.y_bottom > frame_coords.y_top
+                else map_height_y
+            )
+            c_frame_coords = FrameCoords(
+                0, frame_coords.y_top, frame_coords.x_right, c_frame_bottom_y
+            )
             c_signal_bits = super().compute_frame_signal_bits_amount(c_frame_coords)
 
         # if the frame wraps on both directions, we need to compute signal bits in A
-        if bottom_x < top_x and bottom_y < top_y:
-            a_frame_coords = [[0, 0], [bottom_x, bottom_y]]
+        if (
+            frame_coords.x_right < frame_coords.x_left
+            and frame_coords.y_bottom < frame_coords.y_top
+        ):
+            a_frame_coords = FrameCoords(
+                0, 0, frame_coords.x_right, frame_coords.y_bottom
+            )
             a_signal_bits = super().compute_frame_signal_bits_amount(a_frame_coords)
 
-        d_frame_coords = [[top_x, top_y], [d_bottom_x, d_bottom_y]]
+        d_frame_coords = FrameCoords(
+            frame_coords.x_left, frame_coords.y_top, d_right_x, d_bottom_y
+        )
         d_signal_bits = super().compute_frame_signal_bits_amount(d_frame_coords)
 
         return a_signal_bits + b_signal_bits + c_signal_bits + d_signal_bits

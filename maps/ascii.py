@@ -1,6 +1,7 @@
 from core.exceptions import EmptyMapException
 from core.mixins import AsciiToBinaryMixin, BinaryToAsciiMixin
 from core.types import Frame
+from core.utils import FrameCoords
 from maps.base import Map
 
 
@@ -17,15 +18,15 @@ class AsciiMap(AsciiToBinaryMixin, BinaryToAsciiMixin, Map):
         if not binary_matrix:
             raise EmptyMapException("A Map should not be empty.")
 
-    def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
+    def get_frame_at(self, frame_coords: FrameCoords) -> Frame:
         frame = Frame([])
-        for i in range(y_start, y_end + 1):
-            row = self.representation[i][x_start:x_end + 1]
+        for i in range(frame_coords.y_top, frame_coords.y_bottom + 1):
+            row = self.representation[i][frame_coords.x_left:frame_coords.x_right + 1]
             frame.append(row)
         return frame
 
-    def print_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int):
-        frame = self.get_frame_at(x_start, y_start, x_end, y_end)
+    def print_frame_at(self, frame_coords: FrameCoords):
+        frame = self.get_frame_at(frame_coords)
         ascii_string = self.convert_binary_matrix_to_ascii(frame)
         print(ascii_string)
 
@@ -35,27 +36,32 @@ class AsciiSphericalMap(AsciiMap, Map):
     A map represented as ASCII characters.
     """
 
-    def get_frame_at(self, x_start: int, y_start: int, x_end: int, y_end: int) -> Frame:
+    def get_frame_at(self, frame_coords: FrameCoords) -> Frame:
         """
         Allows retrieval of frames assuming the map is spherical and coordinates
         can wrap (i.e. x_end and y_end coordinates can be smaller than x_start and
         y_start).
 
-        :param x_start: X coordinate of top-left corner of the frame.
-        :param y_start: Y coordinate of top-left corner of the frame.
-        :param x_end: X coordinate of bottom-right corner of the frame.
-        :param y_end: Y coordinate of bottom-right corner of the frame.
+        :param frame_coords: The coordinates of the frame
         :return: The frame.
         """
         frame = Frame([])
-        if y_start <= y_end:
-            for row in self.representation[y_start:y_end + 1]:
-                frame.append(self.get_row_subset(row, x_start, x_end))
+        if frame_coords.y_top <= frame_coords.y_bottom:
+            for row in self.representation[
+                frame_coords.y_top:frame_coords.y_bottom + 1
+            ]:
+                frame.append(
+                    self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right)
+                )
         else:
-            for row in self.representation[y_start:]:
-                frame.append(self.get_row_subset(row, x_start, x_end))
-            for row in self.representation[:y_end + 1]:
-                frame.append(self.get_row_subset(row, x_start, x_end))
+            for row in self.representation[frame_coords.y_top:]:
+                frame.append(
+                    self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right)
+                )
+            for row in self.representation[:frame_coords.y_bottom + 1]:
+                frame.append(
+                    self.get_row_subset(row, frame_coords.x_left, frame_coords.x_right)
+                )
 
         return frame
 
@@ -64,4 +70,4 @@ class AsciiSphericalMap(AsciiMap, Map):
         if x_start <= x_end:
             return row[x_start:x_end + 1]
         else:
-            return row[x_start:] + row[: x_end + 1]
+            return row[x_start:] + row[:x_end + 1]

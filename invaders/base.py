@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from core.exceptions import NoSignalException
 from core.types import Frame
+from core.utils import FrameCoords
 
 
 class PrettyRepresentationABC(ABC):
@@ -111,7 +112,7 @@ class IdentifiedInvader(PrettyRepresentationABC, ABC):
         original: Invader,
         binary_matrix: Frame,
         similarity_ratio: float,
-        frame_coords_on_map: list[int],
+        frame_coords_on_map: FrameCoords,
     ):
         self.original_invader = original
         self.pattern = binary_matrix
